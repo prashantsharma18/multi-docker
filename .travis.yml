@@ -1,23 +1,25 @@
 sudo: required
+
 language: generic
+
 services:
   - docker
 
-  before_install:
-    - docker build -t prashantsharma18/react-test -f ./client/Dockerfile.dev ./client
+before_install:
+  - docker build -t prashantsharma18/react-test -f ./client/Dockerfile.dev ./client
 
-  script:
-    - docker run -e CI=true prashantsharma18/react-test npm test
+script:
+  - docker run -e CI=true prashantsharma18/react-test npm test
 
-  after_success:
-    - docker build -t prashantsharma18/multi-client ./client
-    - docker build -t prashantsharma18/multi-nginx ./nginx
-    - docker build -t prashantsharma18/multi-server ./server
-    - docker build -t prashantsharma18/multi-worker ./worker
-    #Login to the docker cli
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    #take those images and push to docker hub
-    - docker push prashantsharma18/multi-client
-    - docker push prashantsharma18/multi-nginx
-    - docker push prashantsharma18/multi-server
-    - docker push prashantsharma18/multi-worker
+after_success:
+  - docker build -t prashantsharma18/multi-client ./client
+  - docker build -t prashantsharma18/multi-nginx ./nginx
+  - docker build -t prashantsharma18/multi-server ./server
+  - docker build -t prashantsharma18/multi-worker ./worker
+  #Login to the docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #take those images and push to docker hub
+  - docker push prashantsharma18/multi-client
+  - docker push prashantsharma18/multi-nginx
+  - docker push prashantsharma18/multi-server
+  - docker push prashantsharma18/multi-worker
